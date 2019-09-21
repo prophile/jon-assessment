@@ -6,7 +6,7 @@ import statistics
 import sys
 from dataclasses import dataclass, field
 from math import log
-from typing import Callable, Dict, Iterable, List, NewType, Optional, Type
+from typing import Callable, Dict, Iterable, List, NewType, Optional, Type, Any
 
 from ruamel import yaml
 
@@ -32,8 +32,10 @@ class ScoringMethod(abc.ABC):
         return str(score)
 
     @classmethod
-    def __init_subclass__(cls, short_name=None, **kwargs):
-        super().__init_subclass__(**kwargs)
+    def __init_subclass__(
+        cls, short_name: Optional[str] = None
+    ) -> None:
+        super().__init_subclass__()
         if short_name is not None:
             cls.short_name = short_name
             SCORING_METHODS_BY_NAME[short_name] = cls
