@@ -59,7 +59,7 @@ class BrierScoring(ScoringMethod, short_name="brier"):
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
     ) -> float:
-        return (1 - correct_prediction) ** 2
+        return (correct_prediction - 1) ** 2 + sum(x ** 2 for x in other_predictions)
 
 
 class LogLossScoring(ScoringMethod, short_name="log-loss"):
