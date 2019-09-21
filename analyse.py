@@ -6,7 +6,17 @@ import statistics
 import sys
 from dataclasses import dataclass, field
 from math import log
-from typing import Callable, Dict, Iterable, List, NewType, Optional, Type, Any
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    NewType,
+    Optional,
+    Sequence,
+    Type,
+)
 
 from ruamel import yaml
 
@@ -25,16 +35,16 @@ class ScoringMethod(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def score(self, prediction: float) -> float:
+    def score(
+        self, correct_prediction: float, other_predictions: Sequence[float]
+    ) -> float:
         raise NotImplementedError
 
     def format(self, score: float) -> str:
         return str(score)
 
     @classmethod
-    def __init_subclass__(
-        cls, short_name: Optional[str] = None
-    ) -> None:
+    def __init_subclass__(cls, short_name: Optional[str] = None) -> None:
         super().__init_subclass__()
         if short_name is not None:
             cls.short_name = short_name
@@ -45,16 +55,20 @@ class BrierScoring(ScoringMethod, short_name="brier"):
     description = "Brier score as advocated by Tetlock et al"
     format = "{:.4f}".format
 
-    def score(self, prediction: float) -> float:
-        return (1 - prediction) ** 2
+    def score(
+        self, correct_prediction: float, other_predictions: Sequence[float]
+    ) -> float:
+        return (1 - correct_prediction) ** 2
 
 
 class LogLossScoring(ScoringMethod, short_name="log-loss"):
     description = "Cross-entropy loss, analogous to logistic regression"
     format = "{:.3f} bits".format
 
-    def score(self, prediction: float) -> float:
-        return -log(prediction, 2)
+    def score(
+        self, correct_prediction: float, other_predictions: Sequence[float]
+    ) -> float:
+        return -log(correct_prediction, 2)
 
 
 class AccuracyScoring(ScoringMethod, short_name="accuracy"):
@@ -63,8 +77,10 @@ class AccuracyScoring(ScoringMethod, short_name="accuracy"):
     def format(self, score: float) -> str:
         return f"{score * 100:.1f}%"
 
-    def score(self, prediction: float) -> float:
-        return 1.0 if prediction > 0.5 else 0.0
+    def score(
+        self, correct_prediction: float, other_predictions: Sequence[float]
+    ) -> float:
+        return 1.0 if correct_prediction > 0.5 else 0.0
 
 
 class IntuitiveScoring(ScoringMethod, short_name="intuitive"):
@@ -73,8 +89,10 @@ class IntuitiveScoring(ScoringMethod, short_name="intuitive"):
     def format(self, score: float) -> str:
         return f"{score * 100:.1f}%"
 
-    def score(self, prediction: float) -> float:
-        return 1.0 if prediction >= 0.6 else 0.0
+    def score(
+        self, correct_prediction: float, other_predictions: Sequence[float]
+    ) -> float:
+        return 1.0 if correct_prediction >= 0.6 else 0.0
 
 
 DEFAULT_SCORING_METHOD: Type[ScoringMethod] = BrierScoring
@@ -199,8 +217,16 @@ def main(args: Iterable[str] = sys.argv[1:]) -> None:
             if prediction["outcome"] not in predicted_outcomes:
                 source.num_missed += 1
             else:
+                other_predictions: List[float] = []
+                for (
+                    predicted_outcome_name,
+                    prediction_prob,
+                ) in predicted_outcomes.items():
+                    if predicted_outcome_name == prediction["outcome"]:
+                        continue
+                    other_predictions.append(prediction_prob)
                 prediction_prob = predicted_outcomes[prediction["outcome"]]
-                source.scores.append(scorer.score(prediction_prob))
+                source.scores.append(scorer.score(prediction_prob, other_predictions))
 
     for source in sources.values():
         print(source.name)
