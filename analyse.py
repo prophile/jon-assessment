@@ -38,7 +38,7 @@ class ScoringMethod(abc.ABC):
     @abc.abstractmethod
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
-    ) -> float:
+    ) -> Optional[float]:
         raise NotImplementedError
 
     def format(self, score: float) -> str:
@@ -58,7 +58,7 @@ class BrierScoring(ScoringMethod, short_name="brier"):
 
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
-    ) -> float:
+    ) -> Optional[float]:
         return (correct_prediction - 1) ** 2 + sum(x ** 2 for x in other_predictions)
 
 
@@ -67,8 +67,11 @@ class NormalisedBrierScoring(BrierScoring, short_name="brier-normalised"):
 
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
-    ) -> float:
-        return 0.5 * super().score(correct_prediction, other_predictions)
+    ) -> Optional[float]:
+        parent_score = super().score(correct_prediction, other_predictions)
+        if parent_score is None:
+            return None
+        return 0.5 * parent_score
 
 
 class LogLossScoring(ScoringMethod, short_name="log-loss"):
@@ -77,7 +80,7 @@ class LogLossScoring(ScoringMethod, short_name="log-loss"):
 
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
-    ) -> float:
+    ) -> Optional[float]:
         return -log(correct_prediction, 2) - sum(
             log(1 - x, 2) for x in other_predictions
         )
@@ -89,13 +92,26 @@ class AccuracyScoring(ScoringMethod, short_name="accuracy"):
     def format(self, score: float) -> str:
         return f"{score * 100:.1f}%"
 
+    def break_tie(self) -> Optional[float]:
+        return None
+
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
-    ) -> float:
+    ) -> Optional[float]:
         if len(other_predictions) == 0:
             # Undefined
-            return correct_prediction > 0.5
-        return 1.0 if correct_prediction > max(other_predictions) else 0.0
+            return None
+        max_other_prediction = max(other_predictions)
+        if correct_prediction == max_other_prediction:
+            return self.break_tie()
+        return 1.0 if correct_prediction > max_other_prediction else 0.0
+
+
+class AccuracyOptimisticScoring(AccuracyScoring, short_name="accuracy-optimistic"):
+    description = "Predictive accuracy counting one of a tie as a correct prediction"
+
+    def break_tie(self) -> Optional[float]:
+        return 1.0
 
 
 class IntuitiveScoring(ScoringMethod, short_name="intuitive"):
@@ -106,7 +122,7 @@ class IntuitiveScoring(ScoringMethod, short_name="intuitive"):
 
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
-    ) -> float:
+    ) -> Optional[float]:
         return 1.0 if correct_prediction >= 0.6 else 0.0
 
 
@@ -242,7 +258,9 @@ def main(args: Iterable[str] = sys.argv[1:]) -> None:
                         continue
                     other_predictions.append(prediction_prob)
                 prediction_prob = predicted_outcomes[prediction["outcome"]]
-                source.scores.append(scorer.score(prediction_prob, other_predictions))
+                prob_score = scorer.score(prediction_prob, other_predictions)
+                if prob_score is not None:
+                    source.scores.append(prob_score)
 
     for source in sources.values():
         print(source.name)
