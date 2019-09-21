@@ -13,16 +13,7 @@ from ruamel import yaml
 SourceID = NewType("SourceID", str)
 RouteName = NewType("RouteName", str)
 
-
-@dataclass(frozen=True)
-class ScoringMethod:
-    short_name: str
-    description: str
-    score: Callable[[float], float]
-    output_format: str
-
-
-SCORING_METHODS_BY_NAME: Dict[str, ScoringMethod] = {}
+SCORING_METHODS_BY_NAME: Dict[str, Type[ScoringMethod]] = {}
 
 
 class ScoringMethod(abc.ABC):
@@ -34,7 +25,7 @@ class ScoringMethod(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def score(prediction: float) -> float:
+    def score(self, prediction: float) -> float:
         raise NotImplementedError
 
     def format(self, score: float) -> str:
