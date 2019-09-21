@@ -84,7 +84,7 @@ class LogLossScoring(ScoringMethod, short_name="log-loss"):
 
 
 class AccuracyScoring(ScoringMethod, short_name="accuracy"):
-    description = "Raw predictive accuracy at >.5"
+    description = "Raw predictive accuracy"
 
     def format(self, score: float) -> str:
         return f"{score * 100:.1f}%"
@@ -92,7 +92,10 @@ class AccuracyScoring(ScoringMethod, short_name="accuracy"):
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
     ) -> float:
-        return 1.0 if correct_prediction > 0.5 else 0.0
+        if len(other_predictions) == 0:
+            # Undefined
+            return correct_prediction > 0.5
+        return 1.0 if correct_prediction > max(other_predictions) else 0.0
 
 
 class IntuitiveScoring(ScoringMethod, short_name="intuitive"):
