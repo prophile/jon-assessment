@@ -175,3 +175,63 @@ predictions:
         predicted:
           worth: 0.7
     outcome: efforts-succeed
+
+  - name: V11, Johnson has settled on removing the Backstop from the WA but the Commons has made its intentions clear, what happens next?
+    date: 2019-08-20
+    routes:
+      revert:
+        name: Johnson changes tack, seeks to revert Irish Backstop to original form
+        predicted:
+          worth: 0.05
+      commons-tries-to-block-no-deal:
+        name: The commons moves to try to block no deal via legislative means
+        predicted:
+          worth: 0.8
+      election:
+        name: Johnson pushes forward to try to get an election
+        predicted:
+          worth: 0.15
+    outcome: commons-tries-to-block-no-deal
+
+  - name: V11, the Commons tries to block No Deal via legislation
+    date: 2019-08-28
+    routes:
+      efforts-fail:
+        name: Legislative efforts fail
+        predicted:
+          worth: 0.4
+      efforts-succeed:
+        name: Legislative efforts succeed
+        predicted:
+          worth: 0.6
+    outcome: efforts-succeed
+
+  - name: V11, No Deal is blocked by legislation, what happens next?
+    date: 2019-08-28
+    routes:
+      revert:
+        name: Johnson changes tack, seeks to revert Irish Backstop to original form
+        predicted:
+          worth: 0.1
+      may-deal:
+        name: Johnson accepts the backstop and tries to get the WA through the commons (again)
+        predicted:
+          worth: 0.1
+      extension:
+        name: Johnson goes to Brussels and asks for an extension
+        predicted:
+          worth: 0.2
+      election-called:
+        name: Johnson calls an election along with asking for the extension
+        predicted:
+          worth: 0.4
+      johnson-denies-reality:
+        name: Johnson says he's still looking for a deal but doesn't ask for an extension
+        predicted:
+          worth: 0.1
+      prorogation-no-deal:
+        name: Johnson prorogues parliament until after the 1st of November
+        predicted:
+          worth: 0.1
+    outcome: johnson-denies-reality
+
