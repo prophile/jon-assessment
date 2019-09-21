@@ -69,7 +69,9 @@ class LogLossScoring(ScoringMethod, short_name="log-loss"):
     def score(
         self, correct_prediction: float, other_predictions: Sequence[float]
     ) -> float:
-        return -log(correct_prediction, 2)
+        return -log(correct_prediction, 2) - sum(
+            log(1 - x, 2) for x in other_predictions
+        )
 
 
 class AccuracyScoring(ScoringMethod, short_name="accuracy"):
