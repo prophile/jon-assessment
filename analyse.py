@@ -62,6 +62,15 @@ class BrierScoring(ScoringMethod, short_name="brier"):
         return (correct_prediction - 1) ** 2 + sum(x ** 2 for x in other_predictions)
 
 
+class NormalisedBrierScoring(BrierScoring, short_name="brier-normalised"):
+    description = "Brier score as advocated by Tetlock et al, normalised to 0-1"
+
+    def score(
+        self, correct_prediction: float, other_predictions: Sequence[float]
+    ) -> float:
+        return 0.5 * super().score(correct_prediction, other_predictions)
+
+
 class LogLossScoring(ScoringMethod, short_name="log-loss"):
     description = "Cross-entropy loss, analogous to logistic regression"
     format = "{:.3f} bits".format
