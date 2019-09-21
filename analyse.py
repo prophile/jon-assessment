@@ -1,10 +1,13 @@
-from typing import List, Iterable, Callable, Dict, Optional, NewType
+from __future__ import annotations
+
+from typing import Type, List, Iterable, Callable, Dict, Optional, NewType
 from ruamel import yaml
 import argparse
 from dataclasses import dataclass, field
 from math import log
 import sys
 import statistics
+import abc
 
 
 SourceID = NewType("SourceID", str)
@@ -19,34 +22,69 @@ class ScoringMethod:
     output_format: str
 
 
-SCORING_METHODS = [
-    ScoringMethod(
-        short_name="brier",
-        description="Brier score as advocated by Tetlock et al",
-        score=lambda prediction: (1 - prediction) ** 2,
-        output_format="{score:.4f}",
-    ),
-    ScoringMethod(
-        short_name="log-loss",
-        description="Cross-entropy loss, analogous to logistic regression",
-        score=lambda prediction: -log(prediction, 2),
-        output_format="{score:.3f} bits",
-    ),
-    ScoringMethod(
-        short_name="accuracy",
-        description="Raw predictive accuracy at >.5",
-        score=lambda prediction: 1 if prediction > 0.5 else 0,
-        output_format="{score * 100:.1f}%",
-    ),
-    ScoringMethod(
-        short_name="intuitive",
-        description="Intuitive (non-scientific) loss as perceived; with >=.6 being guaranteed and <.4 the opposite",
-        score=lambda prediction: 1 if prediction >= 0.6 else 0,
-        output_format="{score * 100:.1f}%",
-    ),
-]
+SCORING_METHODS_BY_NAME: Dict[str, ScoringMethod] = {}
 
-DEFAULT_SCORING_METHOD = "log-loss"
+
+class ScoringMethod(abc.ABC):
+    short_name: str
+
+    @property
+    @abc.abstractmethod
+    def description(self) -> str:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def score(prediction: float) -> float:
+        raise NotImplementedError
+
+    def format(self, score: float) -> str:
+        return str(score)
+
+    @classmethod
+    def __init_subclass__(cls, short_name=None, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if short_name is not None:
+            cls.short_name = short_name
+            SCORING_METHODS_BY_NAME[short_name] = cls
+
+
+class BrierScoring(ScoringMethod, short_name="brier"):
+    description = "Brier score as advocated by Tetlock et al"
+    format = "{:.4f}".format
+
+    def score(self, prediction: float) -> float:
+        return (1 - prediction) ** 2
+
+
+class LogLossScoring(ScoringMethod, short_name="log-loss"):
+    description = "Cross-entropy loss, analogous to logistic regression"
+    format = "{:.3f} bits".format
+
+    def score(self, prediction: float) -> float:
+        return -log(prediction, 2)
+
+
+class AccuracyScoring(ScoringMethod, short_name="accuracy"):
+    description = "Raw predictive accuracy at >.5"
+
+    def format(self, score: float) -> str:
+        return f"{score * 100:.1f}%"
+
+    def score(self, prediction: float) -> float:
+        return 1.0 if prediction > 0.5 else 0.0
+
+
+class IntuitiveScoring(ScoringMethod, short_name="intuitive"):
+    description = "Intuitive (non-scientific) loss as perceived; with >=.6 being guaranteed and <.4 the opposite"
+
+    def format(self, score: float) -> str:
+        return f"{score * 100:.1f}%"
+
+    def score(self, prediction: float) -> float:
+        return 1.0 if prediction >= 0.6 else 0.0
+
+
+DEFAULT_SCORING_METHOD: Type[ScoringMethod] = BrierScoring
 
 
 def argument_parser() -> argparse.ArgumentParser:
@@ -60,7 +98,7 @@ def argument_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--scoring",
         default=DEFAULT_SCORING_METHOD,
-        choices=[x.short_name for x in SCORING_METHODS],
+        choices=[x for x in SCORING_METHODS_BY_NAME.keys()],
         help="Scoring method to use.",
     )
     parser.add_argument(
@@ -117,13 +155,7 @@ def main(args: Iterable[str] = sys.argv[1:]) -> None:
 
     prediction_data = yaml.safe_load(options.predictions)
 
-    for scorer in SCORING_METHODS:
-        if scorer.short_name == options.scoring:
-            break
-    else:
-        raise AssertionError(
-            f"No scorer named {options.scoring} - this should have been caught by argparse"
-        )
+    scorer: ScoringMethod = SCORING_METHODS_BY_NAME[options.scoring]()
 
     sources = {
         key: Source(id=key, name=value["name"])
@@ -187,7 +219,7 @@ def main(args: Iterable[str] = sys.argv[1:]) -> None:
             continue
 
         score = statistics.mean(source.scores)
-        score_fmt = scorer.output_format.format(score=score)
+        score_fmt = scorer.format(score)
 
         print(f"   Score: {score_fmt}")
 
