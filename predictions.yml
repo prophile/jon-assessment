@@ -145,3 +145,33 @@ predictions:
         name: Johnson prorogues parliament to keep the MPs under control
         predicted: {}
     outcome: prorogation
+
+  - name: V10, Johnson has settled on removing the Backstop from the WA; what happens next?
+    date: 2019-08-20
+    routes:
+      revert:
+        name: Johnson changes tack, seeks to revert Irish Backstop to original form
+        predicted:
+          worth: 0.05
+      no-confidence:
+        name: Corbyn tables VONC around 3rd of September
+        predicted:
+          worth: 0.7
+      no-no-confidence:
+        name: Corbyn does not table VONC in the first 2 weeks of September
+        predicted:
+          worth: 0.25
+    outcome: no-no-confidence
+
+  - name: V10, Commons moves to stop No Deal by forcing PM to send a letter to the Council
+    date: 2019-08-20
+    routes:
+      efforts-fail:
+        name: Legislative efforts fail
+        predicted:
+          worth: 0.3
+      efforts-succeed:
+        name: Legislative efforts succeed
+        predicted:
+          worth: 0.7
+    outcome: efforts-succeed
