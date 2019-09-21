@@ -235,3 +235,54 @@ predictions:
           worth: 0.1
     outcome: johnson-denies-reality
 
+  - name: V12, The government has announced the prorogation and wants to remove the backstop
+    date: 2019-08-28
+    routes:
+      stay-the-course:
+        name: Parliament stays the course and tries to prevent no deal
+        predicted:
+          worth: 0.6
+      vonc:
+        name: Parliament changes tack and tries to remove Johnson via a confidence motion
+        predicted:
+          worth: 0.4
+    outcome: stay-the-course
+
+  - name: V12, the bill to prevent no deal proceeds
+    date: 2019-08-28
+    routes:
+      efforts-fail:
+        name: The efforts fail due to no control of the agenda or defeat in the vote
+        predicted:
+          worth: 0.4
+      efforts-succeed:
+        name: The efforts succeed and the new law is passed
+        predicted:
+          worth: 0.6
+    outcome: efforts-succeed
+
+  - name: V12, anti-no-deal legislation has been passed
+    date: 2019-08-28
+    routes:
+      revert:
+        name: Johnson changes tack, seeks to revert Irish Backstop to original form
+        predicted:
+          worth: 0.1
+      may-deal:
+        name: Johnson accepts the backstop and tries to get the WA through the commons (again)
+        predicted:
+          worth: 0.1
+      extension:
+        name: Johnson goes to Brussels and asks for an extension
+        predicted:
+          worth: 0.2
+      johnson-denies-reality:
+        name: Johnson says he's still looking for a deal but doesn't ask for an extension
+        predicted:
+          worth: 0.1
+      election-called:
+        name: Johnson calls an election along with extending A50
+        predicted:
+          worth: 0.5
+    outcome: johnson-denies-reality
+
