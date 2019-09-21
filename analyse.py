@@ -16,8 +16,7 @@ class ScoringMethod:
     short_name: str
     description: str
     score: Callable[[float], float]
-    output_transform: Callable[[float], float]
-    output_units: str
+    output_format: str
 
 
 SCORING_METHODS = [
@@ -25,29 +24,25 @@ SCORING_METHODS = [
         short_name="brier",
         description="Brier score as advocated by Tetlock et al",
         score=lambda prediction: (1 - prediction) ** 2,
-        output_transform=lambda score: score,
-        output_units="",
+        output_format="{score:.4f}",
     ),
     ScoringMethod(
         short_name="log-loss",
         description="Cross-entropy loss, analogous to logistic regression",
         score=lambda prediction: -log(prediction, 2),
-        output_transform=lambda score: score,
-        output_units="b",
+        output_format="{score:.3f} bits",
     ),
     ScoringMethod(
         short_name="accuracy",
         description="Raw predictive accuracy at >.5",
         score=lambda prediction: 1 if prediction > 0.5 else 0,
-        output_transform=lambda score: 100 * score,
-        output_units="%",
+        output_format="{score * 100:.1f}%",
     ),
     ScoringMethod(
         short_name="intuitive",
         description="Intuitive (non-scientific) loss as perceived; with >=.6 being guaranteed and <.4 the opposite",
         score=lambda prediction: 1 if prediction >= 0.6 else 0,
-        output_transform=lambda score: 100 * score,
-        output_units="%",
+        output_format="{score * 100:.1f}%",
     ),
 ]
 
@@ -70,9 +65,9 @@ def argument_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--add-non-committal",
-        dest='non_committal',
+        dest="non_committal",
         default=[],
-        action='append',
+        action="append",
         help="Add a non-committal version of a source.",
     )
     return parser
@@ -136,7 +131,7 @@ def main(args: Iterable[str] = sys.argv[1:]) -> None:
     }
 
     for non_committal in options.non_committal:
-        new_id = f'{non_committal}_non_committal'
+        new_id = f"{non_committal}_non_committal"
         sources[new_id] = NonCommittalSource(
             id=new_id,
             name=f"Derived: As {sources[non_committal].name}, but with equal probability on each identified outcome",
@@ -191,10 +186,10 @@ def main(args: Iterable[str] = sys.argv[1:]) -> None:
             print("   Unable to produce a meaningful score")
             continue
 
-        average_score = statistics.mean(source.scores)
-        score = scorer.output_transform(average_score)
+        score = statistics.mean(source.scores)
+        score_fmt = scorer.output_format.format(score=score)
 
-        print(f"   Score: {score:.3f}{scorer.output_units}")
+        print(f"   Score: {score_fmt}")
 
 
 if __name__ == "__main__":
