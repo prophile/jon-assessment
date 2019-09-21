@@ -1,0 +1,89 @@
+sources:
+  worth:
+    name: Jon Worth's Brexit diagrams
+
+predictions:
+  - name: V2.1, Boris Johnson reaches final 2 in Tory leadership race
+    date: 2019-05-25
+    routes:
+      johnson:
+        name: Boris Johnson in final 2
+        predicted:
+          worth: 0.5
+      no-johnson:
+        name: Boris Johnson not in final 2
+        predicted:
+          worth: 0.5
+    outcome: johnson
+  - name: V2.1, Boris Johnson has reached final 2 in Tory leadership race
+    date: 2019-05-25
+    routes:
+      johnson:
+        name: Boris Johnson wins Leadership election
+        predicted:
+          worth: 0.9
+      not-johnson:
+        name: Boris Johnson does not win Leadership election
+        predicted:
+          worth: 0.1
+    outcome: johnson
+  - name: V2.1, Johnson becomes leader, do pragmatatists defect?
+    date: 2019-05-25
+    routes:
+      defections:
+        name: Enough pragmatists resign whip to deny Tories a majority
+        predicted:
+          worth: 0.6
+      no-defections:
+        name: Not enough pragmatists resign whip to deny Tories a majority
+        predicted:
+          worth: 0.4
+    outcome: defections
+  - name: V2.1, what happens after the pragmatists have defected
+    date: 2019-05-25
+    routes:
+      peoples-vote:
+        name: Leader concedes to hold 2nd referendum to cling to power
+        predicted:
+          worth: 0.2
+      no-majority:
+        name: No majority, election before the 31st of October
+        predicted:
+          worth: 0.8
+      no-majority-no-election:
+        name: No majority, but parliament blocks an election
+        predicted: {}
+    outcome: no-majority-no-election
+
+  - name: V6, Johnson and Hunt are in the leadership finals, who wins?
+    date: 2019-06-25
+    routes:
+      johnson:
+        name: Boris Johnson wins
+        predicted:
+          worth: 0.8
+      hunt:
+        name: Jeremy Hunt wins
+        predicted:
+          worth: 0.2
+    outcome: johnson
+  - name: V6, Johnson has won, what happens next?
+    date: 2019-06-25
+    routes:
+      election-called:
+        name: Johnson calls a General Election  # failed in the event though
+        predicted:
+          worth: 0.3
+      nothing-happens-labour-vacillates:
+        name: Nothing really happens, Labour vacillates and we drift towards no deal
+        predicted:
+          worth: 0.3
+      withdrawal-agreement:
+        name: Johnson toddles off to Brussels and demands WA changes
+        predicted:
+          worth: 0.3
+      political-declaration:
+        name: Johnson toddles off to Brussels and only demands political declaration changes
+        predicted:
+          worth: 0.1
+    outcome: election-called
