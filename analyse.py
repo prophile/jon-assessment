@@ -21,13 +21,14 @@ from typing import (
 from ruamel import yaml
 
 SourceID = NewType("SourceID", str)
+ScoringMethodName = NewType("ScoringMethodName", str)
 RouteName = NewType("RouteName", str)
 
-SCORING_METHODS_BY_NAME: Dict[str, Type[ScoringMethod]] = {}
+SCORING_METHODS_BY_NAME: Dict[ScoringMethodName, Type[ScoringMethod]] = {}
 
 
 class ScoringMethod(abc.ABC):
-    short_name: str
+    short_name: ScoringMethodName
 
     @property
     @abc.abstractmethod
@@ -47,8 +48,8 @@ class ScoringMethod(abc.ABC):
     def __init_subclass__(cls, short_name: Optional[str] = None) -> None:
         super().__init_subclass__()
         if short_name is not None:
-            cls.short_name = short_name
-            SCORING_METHODS_BY_NAME[short_name] = cls
+            cls.short_name = ScoringMethodName(short_name)
+            SCORING_METHODS_BY_NAME[ScoringMethodName(short_name)] = cls
 
 
 class BrierScoring(ScoringMethod, short_name="brier"):
@@ -110,6 +111,7 @@ def argument_parser() -> argparse.ArgumentParser:
         "--scoring",
         default=DEFAULT_SCORING_METHOD,
         choices=[x for x in SCORING_METHODS_BY_NAME.keys()],
+        type=ScoringMethodName,
         help="Scoring method to use.",
     )
     parser.add_argument(
