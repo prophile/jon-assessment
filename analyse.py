@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from typing import Type, List, Iterable, Callable, Dict, Optional, NewType
-from ruamel import yaml
+import abc
 import argparse
+import statistics
+import sys
 from dataclasses import dataclass, field
 from math import log
-import sys
-import statistics
-import abc
+from typing import Callable, Dict, Iterable, List, NewType, Optional, Type
 
+from ruamel import yaml
 
 SourceID = NewType("SourceID", str)
 RouteName = NewType("RouteName", str)
