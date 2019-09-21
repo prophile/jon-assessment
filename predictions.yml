@@ -1,6 +1,8 @@
 sources:
   worth:
     name: Jon Worth's Brexit diagrams
+  rfd:
+    name: "Remainer fever dream: the worst possible outcome for a remainer with p=0.88 (same outcomes defined as Jon Worth's diagrams)"
 
 predictions:
   - name: V2.1, Boris Johnson reaches final 2 in Tory leadership race
@@ -10,10 +12,12 @@ predictions:
         name: Boris Johnson in final 2
         predicted:
           worth: 0.5
+          rfd: 0.88
       no-johnson:
         name: Boris Johnson not in final 2
         predicted:
           worth: 0.5
+          rfd: 0.12
     outcome: johnson
   - name: V2.1, Boris Johnson has reached final 2 in Tory leadership race
     date: 2019-05-25
@@ -22,10 +26,12 @@ predictions:
         name: Boris Johnson wins Leadership election
         predicted:
           worth: 0.9
+          rfd: 0.88
       not-johnson:
         name: Boris Johnson does not win Leadership election
         predicted:
           worth: 0.1
+          rfd: 0.12
     outcome: johnson
   - name: V2.1, Johnson becomes leader, do pragmatatists defect?
     date: 2019-05-25
@@ -34,10 +40,12 @@ predictions:
         name: Enough pragmatists resign whip to deny Tories a majority
         predicted:
           worth: 0.6
+          rfd: 0.12
       no-defections:
         name: Not enough pragmatists resign whip to deny Tories a majority
         predicted:
           worth: 0.4
+          rfd: 0.88
     outcome: defections
   - name: V2.1, what happens after the pragmatists have defected
     date: 2019-05-25
@@ -46,10 +54,12 @@ predictions:
         name: Leader concedes to hold 2nd referendum to cling to power
         predicted:
           worth: 0.2
+          rfd: 0.12
       no-majority:
         name: No majority, election before the 31st of October
         predicted:
           worth: 0.8
+          rfd: 0.88
       no-majority-no-election:
         name: No majority, but parliament blocks an election
         predicted: {}
@@ -62,10 +72,12 @@ predictions:
         name: Boris Johnson wins
         predicted:
           worth: 0.8
+          rfd: 0.88
       hunt:
         name: Jeremy Hunt wins
         predicted:
           worth: 0.2
+          rfd: 0.11
     outcome: johnson
   - name: V6, Johnson has won, what happens next?
     date: 2019-06-25
@@ -74,18 +86,22 @@ predictions:
         name: Johnson calls a General Election  # failed in the event though
         predicted:
           worth: 0.3
+          rfd: 0.04
       nothing-happens-labour-vacillates:
         name: Nothing really happens, Labour vacillates and we drift towards no deal
         predicted:
           worth: 0.3
+          rfd: 0.88
       withdrawal-agreement:
         name: Johnson toddles off to Brussels and demands WA changes
         predicted:
           worth: 0.3
+          rfd: 0.04
       political-declaration:
         name: Johnson toddles off to Brussels and only demands political declaration changes
         predicted:
           worth: 0.1
+          rfd: 0.04
     outcome: election-called
 
   - name: V9, PM has survived his first week and begun the summer recess, what happens next
@@ -95,18 +111,22 @@ predictions:
         name: Johnson seeks to revert the backstop to its original form
         predicted:
           worth: 0.1
+          rfd: 0.04
       bluster:
         name: Johnson makes a series of bombastic statements about the need for a deal but little happens
         predicted:
           worth: 0.4
+          rfd: 0.88
       withdrawal-agreement:
         name: Johnson toddles off to Brussels and demands WA changes
         predicted:
           worth: 0.4
+          rfd: 0.04
       political-declaration:
         name: Johnson toddles off to Brussels and only demands political declaration changes
         predicted:
           worth: 0.1
+          rfd: 0.04
     outcome: bluster
 
   - name: V9, having made bombastic statements, what actually happens
@@ -116,18 +136,22 @@ predictions:
         name: Johnson calls a general election
         predicted:
           worth: 0.4
+          rfd: 0.04
       majority-loss:
         name: Johnson loses his majority in early september
         predicted:
           worth: 0.1
+          rfd: 0.04
       late-september-no-deal-drift:
         name: Lack of consensus drifts us towards No Deal and MPs mobilise in late september
         predicted:
           worth: 0.4
+          rfd: 0.04
       majority-kept:
         name: Johnson retains the confidence of the house in early september
         predicted:
           worth: 0.1
+          rfd: 0.88
     outcome: majority-loss
 
   - name: V9, Having lost the majority, what happens next
@@ -137,10 +161,12 @@ predictions:
         name: UK has a General Election
         predicted:
           worth: 0.9
+          rfd: 0.88
       peoples-vote:
         name: Johnson agrees to hold a PV to cling to power
         predicted:
           worth: 0.1
+          rfd: 0.12
       prorogation:
         name: Johnson prorogues parliament to keep the MPs under control
         predicted: {}
@@ -153,14 +179,17 @@ predictions:
         name: Johnson changes tack, seeks to revert Irish Backstop to original form
         predicted:
           worth: 0.05
+          rfd: 0.06
       no-confidence:
         name: Corbyn tables VONC around 3rd of September
         predicted:
           worth: 0.7
+          rfd: 0.06
       no-no-confidence:
         name: Corbyn does not table VONC in the first 2 weeks of September
         predicted:
           worth: 0.25
+          rfd: 0.88
     outcome: no-no-confidence
 
   - name: V10, Commons moves to stop No Deal by forcing PM to send a letter to the Council
@@ -170,10 +199,12 @@ predictions:
         name: Legislative efforts fail
         predicted:
           worth: 0.3
+          rfd: 0.88
       efforts-succeed:
         name: Legislative efforts succeed
         predicted:
           worth: 0.7
+          rfd: 0.12
     outcome: efforts-succeed
 
   - name: V11, Johnson has settled on removing the Backstop from the WA but the Commons has made its intentions clear, what happens next?
@@ -183,14 +214,17 @@ predictions:
         name: Johnson changes tack, seeks to revert Irish Backstop to original form
         predicted:
           worth: 0.05
+          rfd: 0.06
       commons-tries-to-block-no-deal:
         name: The commons moves to try to block no deal via legislative means
         predicted:
           worth: 0.8
+          rfd: 0.06
       election:
         name: Johnson pushes forward to try to get an election
         predicted:
           worth: 0.15
+          rfd: 0.88
     outcome: commons-tries-to-block-no-deal
 
   - name: V11, the Commons tries to block No Deal via legislation
@@ -200,10 +234,12 @@ predictions:
         name: Legislative efforts fail
         predicted:
           worth: 0.4
+          rfd: 0.88
       efforts-succeed:
         name: Legislative efforts succeed
         predicted:
           worth: 0.6
+          rfd: 0.12
     outcome: efforts-succeed
 
   - name: V11, No Deal is blocked by legislation, what happens next?
@@ -213,26 +249,32 @@ predictions:
         name: Johnson changes tack, seeks to revert Irish Backstop to original form
         predicted:
           worth: 0.1
+          rfd: 0.024
       may-deal:
         name: Johnson accepts the backstop and tries to get the WA through the commons (again)
         predicted:
           worth: 0.1
+          rfd: 0.024
       extension:
         name: Johnson goes to Brussels and asks for an extension
         predicted:
           worth: 0.2
+          rfd: 0.024
       election-called:
         name: Johnson calls an election along with asking for the extension
         predicted:
           worth: 0.4
+          rfd: 0.024
       johnson-denies-reality:
         name: Johnson says he's still looking for a deal but doesn't ask for an extension
         predicted:
           worth: 0.1
+          rfd: 0.024
       prorogation-no-deal:
         name: Johnson prorogues parliament until after the 1st of November
         predicted:
           worth: 0.1
+          rfd: 0.88
     outcome: johnson-denies-reality
 
   - name: V12, The government has announced the prorogation and wants to remove the backstop
@@ -242,10 +284,12 @@ predictions:
         name: Parliament stays the course and tries to prevent no deal
         predicted:
           worth: 0.6
+          rfd: 0.12
       vonc:
         name: Parliament changes tack and tries to remove Johnson via a confidence motion
         predicted:
           worth: 0.4
+          rfd: 0.88
     outcome: stay-the-course
 
   - name: V12, the bill to prevent no deal proceeds
@@ -255,10 +299,12 @@ predictions:
         name: The efforts fail due to no control of the agenda or defeat in the vote
         predicted:
           worth: 0.4
+          rfd: 0.88
       efforts-succeed:
         name: The efforts succeed and the new law is passed
         predicted:
           worth: 0.6
+          rfd: 0.12
     outcome: efforts-succeed
 
   - name: V12, anti-no-deal legislation has been passed
@@ -268,21 +314,26 @@ predictions:
         name: Johnson changes tack, seeks to revert Irish Backstop to original form
         predicted:
           worth: 0.1
+          rfd: 0.03
       may-deal:
         name: Johnson accepts the backstop and tries to get the WA through the commons (again)
         predicted:
           worth: 0.1
+          rfd: 0.03
       extension:
         name: Johnson goes to Brussels and asks for an extension
         predicted:
           worth: 0.2
+          rfd: 0.03
       johnson-denies-reality:
         name: Johnson says he's still looking for a deal but doesn't ask for an extension
         predicted:
           worth: 0.1
+          rfd: 0.88
       election-called:
         name: Johnson calls an election along with extending A50
         predicted:
           worth: 0.5
+          rfd: 0.03
     outcome: johnson-denies-reality
 
