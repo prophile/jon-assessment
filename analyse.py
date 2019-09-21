@@ -154,7 +154,7 @@ def main(args: Iterable[str] = sys.argv[1:]) -> None:
     }
 
     for non_committal in options.non_committal:
-        new_id = f"{non_committal}_non_committal"
+        new_id = SourceID(f"{non_committal}_non_committal")
         sources[new_id] = NonCommittalSource(
             id=new_id,
             name=f"Derived: As {sources[non_committal].name}, but with equal probability on each identified outcome",
