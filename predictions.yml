@@ -87,3 +87,61 @@ predictions:
         predicted:
           worth: 0.1
     outcome: election-called
+
+  - name: V9, PM has survived his first week and begun the summer recess, what happens next
+    date: 2019-07-26
+    routes:
+      backstop-revert:
+        name: Johnson seeks to revert the backstop to its original form
+        predicted:
+          worth: 0.1
+      bluster:
+        name: Johnson makes a series of bombastic statements about the need for a deal but little happens
+        predicted:
+          worth: 0.4
+      withdrawal-agreement:
+        name: Johnson toddles off to Brussels and demands WA changes
+        predicted:
+          worth: 0.4
+      political-declaration:
+        name: Johnson toddles off to Brussels and only demands political declaration changes
+        predicted:
+          worth: 0.1
+    outcome: bluster
+
+  - name: V9, having made bombastic statements, what actually happens
+    date: 2019-07-26
+    routes:
+      election:
+        name: Johnson calls a general election
+        predicted:
+          worth: 0.4
+      majority-loss:
+        name: Johnson loses his majority in early september
+        predicted:
+          worth: 0.1
+      late-september-no-deal-drift:
+        name: Lack of consensus drifts us towards No Deal and MPs mobilise in late september
+        predicted:
+          worth: 0.4
+      majority-kept:
+        name: Johnson retains the confidence of the house in early september
+        predicted:
+          worth: 0.1
+    outcome: majority-loss
+
+  - name: V9, Having lost the majority, what happens next
+    date: 2019-07-26
+    routes:
+      election:
+        name: UK has a General Election
+        predicted:
+          worth: 0.9
+      peoples-vote:
+        name: Johnson agrees to hold a PV to cling to power
+        predicted:
+          worth: 0.1
+      prorogation:
+        name: Johnson prorogues parliament to keep the MPs under control
+        predicted: {}
+    outcome: prorogation
